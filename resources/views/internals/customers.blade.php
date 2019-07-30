@@ -1,14 +1,46 @@
-<ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="about">About Us</a></li>
-    <li><a href="contact">Contact Us</a></li>
-    <li><a href="customers">Customers</a></li>
-</ul>
-<h1>Customers Page</h1>
+@extends('layout')
 
-<ul>
-    @foreach($customers as $customer)
-        <li> {{$customer}} </li>
-    @endforeach
+@section('title','Customer List')
+@section('content')
 
-</ul>
+    <div class="row">
+        <div class="col-12">
+            <h1>Customer List</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <form action="customers" method="POST" class="pb-5">
+                @csrf
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" value="{{ old('name') }}"/>
+                </div>
+
+                <div class="form-group ">
+                    <label for="Email">Email</label>
+                    <input type="text" class="form-control" name="email" value="{{ old('email') }}"/>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add Customer</button>
+            </form>
+        </div>
+    </div>
+
+    @include('utils.error')
+
+    <hr/>
+
+
+    <div class="row">
+        <div class="col-12">
+            <ul>
+                @foreach($customers as $customer)
+                    <li> {{$customer->name}} <span class="text-muted">({{$customer->email}})</span></li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+@endsection
