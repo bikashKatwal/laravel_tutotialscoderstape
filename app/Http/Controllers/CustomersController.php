@@ -8,20 +8,43 @@ use Illuminate\Http\Request;
 
 class CustomersController extends Controller
 {
-    public function list()
+    public function index()
     {
-        $activeCustomers = Customer::active()->get(); //get my active customer
-        $inactiveCustomers = Customer::inActive()->get();//get my inactive customer
+        $customers = Customer::all();
+        return view('customers.index', compact('customers'));
+    }
+
+    public function create()
+    {
         $companies = Company::all();
-
-        return view('internals.customers', compact('activeCustomers', 'inactiveCustomers', 'companies'));
-
+        $customer = new Customer();
+        return view('customers.create', compact('companies','customer'));
     }
 
     public function store()
     {
         Customer::create($this->validateCustomer());
-        return back();
+        return redirect('customers');
+    }
+
+    public function show(Customer $customer)
+    {
+        return view('customers.show', compact('customer'));
+
+        //Route::get('customers/{customer}','CustomersController@show');
+        //Parameter ($customer) is same with Route's {customer} following Route-Model binding concept in laravel
+    }
+
+    public function edit(Customer $customer)
+    {
+        $companies = Company::all();
+        return view('customers.edit', compact('customer', 'companies'));
+    }
+
+    public function update(Customer $customer)
+    {
+        $customer->update($this->validateCustomer());
+        return redirect('customers/'.$customer->id);
     }
 
     private function validateCustomer()
@@ -30,7 +53,7 @@ class CustomersController extends Controller
             'name' => 'required| min:3',
             'email' => 'required|email',
             'active' => 'required',
-            'company_id'=> 'required'
+            'company_id' => 'required'
         ]);
     }
 }

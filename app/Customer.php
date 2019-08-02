@@ -8,6 +8,15 @@ class Customer extends Model
 {
     protected $guarded = [];
 
+    public function getActiveAttribute($attribute)//get_ColumnName_Attribute
+    {
+        return [
+            0=>'Inactive',
+            1=>'Active',
+            2=>'In Progress'
+        ][$attribute];
+    }
+
     public function scopeActive($query)
     {
         return $query->where('active', 1);
@@ -18,8 +27,11 @@ class Customer extends Model
         return $query->where('active', 0);
     }
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo(Company::class);// customer belongs to One company //Singular so company()
         //https://www.youtube.com/watch?v=3Oxfi3DLdkI&list=PLpzy7FIRqpGD0kxI48v8QEVVZd744Phi4&index=14
     }
+
+
 }
