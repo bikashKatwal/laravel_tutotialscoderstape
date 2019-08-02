@@ -1,12 +1,12 @@
 @csrf
 <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" name="name" value="{{ old('name')  ?? $customer->name }}"/>
+    <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid':'' }}" name="name" value="{{ old('name')  ?? $customer->name }}"/>
 </div>
 
 <div class="form-group ">
     <label for="Email">Email</label>
-    <input type="text" class="form-control" name="email" value="{{ old('email') ?? $customer->email }}"/>
+    <input type="text" class="form-control {{ $errors->has('email') ? 'is-invalid':'' }}" name="email" value="{{ old('email') ?? $customer->email }}"/>
 </div>
 
 <div class="form-group ">
