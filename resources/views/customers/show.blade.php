@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('title','Details for ' .  $customer->name)
 @section('content')
@@ -6,11 +6,11 @@
     <div class="row">
         <div class="col-12">
             <h1>Details for {{$customer->name}}</h1>
-            <p><a href="/customers/{{$customer->id}}/edit">Edit Customer</a></p>
+            <p><a href="{{ route('customers.edit', ['customer' => $customer]) }}">Edit</a></p>
 
-            <form action="/customers/{{$customer->id}}" method="POST">
+            <form action="{{route('customers.destroy',['customer'=>$customer])}}" method="POST">
                 @method('DELETE')
-                 @csrf
+                @csrf
                 <button type="submit" class="btn btn-danger">Delete Customer</button>
 
             </form>
