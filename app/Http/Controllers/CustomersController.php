@@ -46,10 +46,7 @@ class CustomersController extends Controller
         //Send slack notification
         //dump("Send slack notification");
 
-
-
-
-        //return redirect('customers');
+        return redirect('customers');
     }
 
     public function show(Customer $customer)
