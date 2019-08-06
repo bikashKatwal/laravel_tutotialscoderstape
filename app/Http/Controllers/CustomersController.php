@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Customer;
+use App\Events\NewCustomerHasRegisteredEvent;
+use App\Mail\WelcomeNewUserMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CustomersController extends Controller
 {
@@ -30,8 +33,23 @@ class CustomersController extends Controller
 
     public function store()
     {
-        Customer::create($this->validateCustomer());
-        return redirect('customers');
+        $customer=Customer::create($this->validateCustomer());
+        //One Event and three listener
+        event(new NewCustomerHasRegisteredEvent($customer));
+
+        // Send email to the new user
+        //Mail::to($customer->email)->send(new WelcomeNewUserMail());
+
+        //Register to news letter
+        //dump("Registered to news letter");
+
+        //Send slack notification
+        //dump("Send slack notification");
+
+
+
+
+        //return redirect('customers');
     }
 
     public function show(Customer $customer)
@@ -39,7 +57,7 @@ class CustomersController extends Controller
         return view('customers.show', compact('customer'));
 
         //Route::get('customers/{customer}','CustomersController@show');
-        //Parameter ($customer) is same with Route's {customer} following Route-Model binding concept in laravel
+        //Parameter ($customer)={customer} in this show() function is the same with Route's {customer} following Route-Model binding concept in laravel
     }
 
     public function edit(Customer $customer)
