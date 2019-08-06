@@ -28,12 +28,14 @@ class CustomersController extends Controller
     {
         $companies = Company::all();
         $customer = new Customer();
-        return view('customers.create', compact('companies','customer'));
+        return view('customers.create', compact('companies', 'customer'));
     }
 
     public function store()
     {
-        $customer=Customer::create($this->validateCustomer());
+        $customer = Customer::create($this->validateCustomer());
+        $this->storeImage($customer);
+
         //One Event and three listener
         event(new NewCustomerHasRegisteredEvent($customer));
 
@@ -66,7 +68,8 @@ class CustomersController extends Controller
     public function update(Customer $customer)
     {
         $customer->update($this->validateCustomer());
-        return redirect('customers/'.$customer->id);
+        $this->storeImage($customer);
+        return redirect('customers/' . $customer->id);
     }
 
     public function destroy(Customer $customer)
@@ -77,11 +80,29 @@ class CustomersController extends Controller
 
     private function validateCustomer()
     {
-        return request()->validate([
+        return tap(request()->validate([
             'name' => 'required| min:3',
             'email' => 'required|email',
             'active' => 'required',
-            'company_id' => 'required',
-        ]);
+            'company_id' => 'required'
+        ]), function () {
+            if (request()->hasFile('image')) {
+                request()->validate([
+                    'image' => 'file|image|max:5000',
+                ]);
+            }
+        });
+
+    }
+
+    private function storeImage($customer)
+    {
+        if (request()->has('image')) {
+            $customer->update([
+                'image'=> request()->image->store('uploads','public')
+                //In request()->image===  is returning the UploadedFile class
+                //save it to uploads directory located in public directory
+            ]);
+        }
     }
 }
