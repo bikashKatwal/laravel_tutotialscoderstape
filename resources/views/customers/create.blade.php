@@ -19,6 +19,6 @@
         </div>
     </div>
 
-    @include('utils.error')
+{{--    @include('utils.error')--}}
 
 @endsection

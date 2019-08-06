@@ -29,8 +29,6 @@
             <button type="submit" class="btn btn-primary">Send Message</button>
         </form>
     @endif
-
-
     @include('utils.error')
 
 @endsection

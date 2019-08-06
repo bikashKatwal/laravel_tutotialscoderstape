@@ -81,7 +81,7 @@ class CustomersController extends Controller
             'name' => 'required| min:3',
             'email' => 'required|email',
             'active' => 'required',
-            'company_id' => 'required'
+            'company_id' => 'required',
         ]);
     }
 }

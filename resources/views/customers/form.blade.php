@@ -30,6 +30,12 @@
                 {{$company->name}}
             </option>
         @endforeach
-
     </select>
 </div>
+
+<div class="form-group d-flex flex-column">
+    <label for="image">Profile Image</label>
+    <input type="file" name="image" class="py-2">
+</div>
+
+@include('utils.error')
