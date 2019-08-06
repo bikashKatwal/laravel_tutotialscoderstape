@@ -80,26 +80,20 @@ class CustomersController extends Controller
 
     private function validateCustomer()
     {
-        return tap(request()->validate([
+        return request()->validate([
             'name' => 'required| min:3',
             'email' => 'required|email',
             'active' => 'required',
-            'company_id' => 'required'
-        ]), function () {
-            if (request()->hasFile('image')) {
-                request()->validate([
-                    'image' => 'file|image|max:5000',
-                ]);
-            }
-        });
-
+            'company_id' => 'required',
+            'image' => 'sometimes|file|image|max:5000',
+        ]);
     }
 
     private function storeImage($customer)
     {
         if (request()->has('image')) {
             $customer->update([
-                'image'=> request()->image->store('uploads','public')
+                'image' => request()->image->store('uploads', 'public')
                 //In request()->image===  is returning the UploadedFile class
                 //save it to uploads directory located in public directory
             ]);
