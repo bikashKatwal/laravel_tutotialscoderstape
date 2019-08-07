@@ -34,6 +34,7 @@ class CustomersController extends Controller
 
     public function store()
     {
+        $this->authorize('create', Customer::class);
         $customer = Customer::create($this->validateCustomer());
         $this->storeImage($customer);
 
@@ -54,6 +55,7 @@ class CustomersController extends Controller
 
     public function show(Customer $customer)
     {
+        $this->authorize('view', $customer);
         return view('customers.show', compact('customer'));
 
         //Route::get('customers/{customer}','CustomersController@show');
@@ -68,6 +70,7 @@ class CustomersController extends Controller
 
     public function update(Customer $customer)
     {
+        $this->authorize('update', $customer);
         $customer->update($this->validateCustomer());
         $this->storeImage($customer);
         return redirect('customers/' . $customer->id);
@@ -75,6 +78,7 @@ class CustomersController extends Controller
 
     public function destroy(Customer $customer)
     {
+        $this->authorize('delete', $customer);
         $customer->delete();
         return redirect('customers');
     }
@@ -99,7 +103,7 @@ class CustomersController extends Controller
                 //save it to uploads directory located in public directory
             ]);
             //dd($customer->image);
-            $image=Image::make(public_path('storage/'.$customer->image))->fit(300,300);
+            $image = Image::make(public_path('storage/' . $customer->image))->fit(300, 300);
             //$image=Image::make(public_path('storage/'.$customer->image))->fit(300,300, null,'top-left');
             $image->save();
         }

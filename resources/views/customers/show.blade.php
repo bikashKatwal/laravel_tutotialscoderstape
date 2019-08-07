@@ -6,7 +6,9 @@
     <div class="row">
         <div class="col-12">
             <h1>Details for {{$customer->name}}</h1>
-            <p><a href="{{ route('customers.edit', ['customer' => $customer]) }}">Edit</a></p>
+            @can('update', $customer)
+                <p><a href="{{ route('customers.edit', ['customer' => $customer]) }}">Edit</a></p>
+            @endcan
 
             <form action="{{route('customers.destroy',['customer'=>$customer])}}" method="POST">
                 @method('DELETE')

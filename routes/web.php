@@ -19,7 +19,7 @@ Route::view('about', 'about')->middleware('test');//This test is registered in M
 Route::get('customers', 'CustomersController@index')->name('customers.index');
 Route::get('customers/create', 'CustomersController@create')->name('customers.create');
 Route::post('customers', 'CustomersController@store')->name('customers.store');
-Route::get('customers/{customer}', 'CustomersController@show')->name('customers.show');
+Route::get('customers/{customer}', 'CustomersController@show')->name('customers.show');//->middleware('can:view, customer');//NOT WORKED POLICY IN WEB.PHP;
 Route::get('customers/{customer}/edit', 'CustomersController@edit')->name('customers.edit');
 Route::patch('customers/{customer}', 'CustomersController@update')->name('customers.update');
 Route::delete('customers/{customer}', 'CustomersController@destroy')->name('customers.destroy');
