@@ -8,6 +8,7 @@ use App\Events\NewCustomerHasRegisteredEvent;
 use App\Mail\WelcomeNewUserMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Intervention\Image\Facades\Image;
 
 class CustomersController extends Controller
 {
@@ -20,7 +21,7 @@ class CustomersController extends Controller
 
     public function index()
     {
-        $customers = Customer::all();
+        $customers = Customer::with('company')->paginate(15);
         return view('customers.index', compact('customers'));
     }
 
@@ -97,6 +98,10 @@ class CustomersController extends Controller
                 //In request()->image===  is returning the UploadedFile class
                 //save it to uploads directory located in public directory
             ]);
+            //dd($customer->image);
+            $image=Image::make(public_path('storage/'.$customer->image))->fit(300,300);
+            //$image=Image::make(public_path('storage/'.$customer->image))->fit(300,300, null,'top-left');
+            $image->save();
         }
     }
 }
